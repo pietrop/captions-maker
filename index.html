@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Captions Maker</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <!-- TODO: move to local folder -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/paper/bootstrap.min.css" >
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+ 
+  </head>
+  <body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Captions Maker</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+    
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" id="videoYoutubeUrlInput" class="form-control" placeholder="Add Youtube URL" value="https://youtu.be/Cd56vF3lZ_Q" >
+          <!--  https://youtu.be/pWZAF3j_jA4  https://youtu.be/CrpkZkwTvu0 -->
+        </div>
+        <button type="submit" id="loadYoutubeUrlBtn" class="btn btn-primary">Load</button>
+
+      </form>
+      <ul class="nav navbar-nav">
+        <form class="navbar-form navbar-left" role="search">
+          <a  id="selectFileBtn" class="btn btn-primary">Select file</a>
+        </form>
+            <!--  <li><a href="#">Link</a></li> -->
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+       <!-- li -->
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container" >
+  <div class="row">
+    <div class="col-xs-12 col-sm-3  col-md-3  col-lg-3">
+      <!-- <label for="select" class="control-label">Video preview</label> -->
+      <!-- <a  id="selectFileBtn" class="btn btn-primary btn-xs ">Select file</a> -->
+         <!-- <br><br> -->
+      <div id="videoPreview" class="embed-responsive embed-responsive-16by9">
+      </div>
+
+<br><br>
+      <div id="demoNoticeDiv"></div>
+
+
+    <!--   <div id="player"></div> -->
+    </div>
+    <div class="col-xs-12 col-sm-7  col-md-7  col-lg-7">
+      <!-- <label for="select" class="control-label">Text</label> -->
+      <div id="textBox"  class="form-control"  contenteditable="true"></div>
+    </div>
+    <div class="col-xs-12 col-sm-2  col-md-2  col-lg-2">
+      <!-- Info -->
+
+ <div class="form-group">
+       <a id="installAeneas" class="btn btn-default btn-xs" href="https://github.com/sillsdev/aeneas-installer/releases" target="_blank">Install Aneneas aligner</a>
+        <a id="alignBtn" class="btn btn-primary btn-xs" href="#">Align</a>
+        <a id="exportSrtBtn" class="btn btn-primary btn-xs" href="#">Export</a>
+        <a id="saveBtn" class="btn btn-primary btn-xs" href="#">Save</a>
+        <a id="restoreLastSavedVersionBtn" class="btn btn-primary btn-xs" href="#">Restore last saved</a>
+ </div>
+      <div class="checkbox">
+        <label>
+          <input id="checkboxInput" type="checkbox" > <small>Pause video while typing </small>
+        </label>
+      </div>
+       <label for="inputEmail" class="control-label">Head Tail</label>
+       <input type="text" class="form-control" id="inputHeadTail" placeholder="head tail" value="00:00:00,000" disabled>
+       <label for="inputEmail" class=" control-label">End Tail</label>
+       <input type="text" class="form-control" id="inputEndTail" placeholder="End tail" value="00:00:00,000" disabled>
+       <!-- <a id="searchBtn" class="btn btn-default btn-xs" href="#">search</a> -->
+
+<div class="form-group">
+  <!-- Espeek languages http://espeak.sourceforge.net/languages.html -->
+      <label for="select" class=" control-label">Languages for alignement</label>
+        <select class="form-control" id="selectLanguageForAlignement" disabled>
+          <option value="eng">English</option>
+          <option value="it">Italian</option>
+          <option value="af">  Afrikaans </option>
+          <option value="bs">  Bosnian </option>
+          <option value="ca">  Catalan </option>
+          <option value="cs">  Czech </option>
+          <option value="da">  Danish </option>
+          <option value="de">  German </option>
+          <option value="el">  Greek </option>
+          <option value="eo">  Esperanto </option>
+          <option value="es">  Spanish </option>
+          <option value="es-la">  Spanish - Latin America </option>
+          <option value="fi">  Finnish </option>
+          <option value="fr">  French </option>
+          <option value="hr">  Croatian </option>
+          <option value="hu">  Hungarian </option>
+          <option value="lv">  Latvian </option>
+          <option value="nl">  Dutch </option>
+          <option value="pl">  Polish </option>
+          <option value="pt">  Portuguese (Brazil) </option>
+          <option value="pt-pt">  Portuguese (European) </option>
+          <option value="ro">  Romanian </option>
+          <option value="sk">  Slovak </option>
+          <option value="sr">  Serbian </option>
+          <option value="sv">  Swedish </option>
+          <option value="sw">  Swahihi </option>
+          <option value="ta">  Tamil </option>
+          <option value="tr">  Turkish </option>
+          <option value="zh">  Mandarin Chinese </option>
+        </select>
+    </div>
+
+<div class="form-group">
+  <!-- Espeek languages http://espeak.sourceforge.net/languages.html -->
+      <label for="select" class=" control-label">Captios file format</label>
+        <select class="form-control" id="selectCaptionFormat" disabled>
+          <option value="srt">SRT</option>
+          <option value="sbv">SBV</option>
+          <option value="ttml">TTML</option>
+          <option value="vtt">VTT</option>
+
+        </select>
+    </div>
+
+
+
+
+    </div>
+  </div>
+</div>
+
+<style>
+#textBox{
+  width: 100%;
+  height: 85vh;
+  overflow: scroll;
+  background: #fff;
+  box-shadow: 0 0 10px #ccc;
+  padding: 50px;
+}
+body{
+      background: #f1f1f1;
+}
+</style>
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+<!-- ./node_modules/bootstrap/dist/js/bootstrap.min.js -->
+</body>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+  <script>
+    // You can also require other files to run in this process
+    if(window.process!=undefined){
+      require('./renderer.js')
+    }else{
+      // run demo code. 
+//////////////////////////////////////////////////////////
+// demo notice
+var demoNotice =`<div class="alert alert-dismissible alert-warning">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <h4>Dummy Demo!</h4>
+  <p>This is a dummy demo of the app, not all the feature work, and it's for demonstratioon purposes only, it is not a web app. click on <b>load</b> and then <b>align</b> for a demonstration of what the app can do.
+  For any questions feel free to get in touch, via <a href="mailto:pietro.passarelli@gmail.com">email</a> or <a href="https://twitter.com/pietropassarell" target="_blank">@pietropassarell</a></p>
+</div>`;
+
+document.getElementById('demoNoticeDiv').innerHTML = demoNotice;
+      // on click of youtube video load populate video player
+      // populate with dummy text
+      // Align populate with dummy srt text example
+   
+var alignBtnEl = document.getElementById('alignBtn');
+var exportSrtBtnEl = document.getElementById('exportSrtBtn');
+var selectFileBtnEl = document.getElementById('selectFileBtn');
+var loadYoutubeUrlBtnEl = document.getElementById('loadYoutubeUrlBtn');
+var videoYoutubeUrlInputEl = document.getElementById('videoYoutubeUrlInput');
+var videoPreviewEl = document.getElementById('videoPreview');
+var textBoxEl = document.getElementById('textBox');
+var checkboxInputEl = document.getElementById('checkboxInput');
+
+var isYoutubeVideo = true;
+var timeout = null;
+var resumeTiypingTimeInterval = 600;
+var startStopPlayingVideoOntyping = false;
+
+
+checkboxInputEl.onclick = function(e){
+  // e.preventDefault();
+  if(startStopPlayingVideoOntyping == false){
+    startStopPlayingVideoOntyping = true;
+  }else{
+    startStopPlayingVideoOntyping = false;
+  }
+};
+
+
+loadYoutubeUrlBtnEl.onclick = function(e){
+  e.preventDefault();
+  isYoutubeVideo = true;
+  // disableTextEditorProgressMessage();
+  var url = videoYoutubeUrlInputEl.value;
+  //TODO: add validation to check it's a valid youtube URL.
+  var youtubeId = youtubeUrlExtractId(url);
+  populateYoutubePlayer(youtubeId);
+
+  //TODO: can I use path .join here to add extension to name?
+  // var destFileName = dataPath+"/"+ youtubeId+".mp4";
+   // sourceVideoPath = destFileName;
+  // downloadYoutubeVideo(url, function(destPath){
+  //   sourceVideoPath = destPath;
+  //   console.log("sourceVideoPath+ ",sourceVideoPath)
+  
+  //   downloadCaptions(url, function(captionFiles){
+  //     if (captionFiles.length ==0){
+  //       alert("This video has no captions");
+  //     }else{
+  //       var captionFile = captionFiles[0];
+  //       console.log("1,openYoutubeVttFile");
+  //       openYoutubeVttFile(path.join(dataPath,captionFile));
+  //       // var captionsContent = openFile(captionFiles[0]);
+        
+  //       console.log(captionFile);
+  //     }
+  //   }); 
+  // });
+};
+
+function youtubeUrlExtractId(url){
+  var urlParts = url.split("/");
+  var urlPartsLegth = urlParts.length;
+  var youtubeId = urlParts[urlPartsLegth-1]
+  return youtubeId;
+}
+
+function populateYoutubePlayer(id){
+  console.log(id);
+  //simple implementation 
+  var youtubeElement = `<iframe id="youtubeIframe" width='560' height='315' class='embed-responsive-item' src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
+  // var youtubeElement = `<video width="640" height="360"><source type="video/youtube" src="http://www.youtube.com/watch?v=${id}" /></video>`
+  videoPreviewEl.innerHTML = youtubeElement;
+  // document.querySelector( 'video' ).addEventListener("playing", checkIfTypingPause, false);
+  document.getElementById('youtubeIframe').onload= function() {
+    var iframe = document.querySelector('iframe');
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    //start video 
+    //TODO: decide whether to enable this or not. maybe make as an option?
+    // innerDoc.querySelectorAll('video')[0].click();
+    
+    initializeVideoPlayPuaseTypingPreferences();
+  };
+
+  loadEditorEith(demoText);
+}
+
+function loadEditorEith(content){
+    textBoxEl.innerText = content
+}
+
+
+alignBtnEl.onclick = function(){
+  loadEditorEith(demoSrtContent)
+  makeSrtTimeCodesIntoLinks()
+  addLinksToSrtTimecodes()
+}
+
+
+ function makeSrtTimeCodesIntoLinks () {
+    // console.log(textBoxEl.innerHTML);
+    //http://pietropassarelli.com/regex.html
+    textBoxEl.innerHTML = textBoxEl.innerHTML.replace(/(\d{2}[:|.]\d{2}[:|.]\d{2}[.|,|:]\d{3})/ig , function replace(match) { //(?!<)
+        return '<a class="timecodeLink">' + match + '</a>'; 
+    });
+    //TODO: Move curson back to it's possition after replacement editable
+    
+    //add event listener on class name. 
+    //https://stackoverflow.com/questions/19655189/javascript-click-event-listener-on-class
+};
+
+
+
+
+function addLinksToSrtTimecodes(){
+  var timecodesEl = document.querySelectorAll('.timecodeLink');
+
+  timecodesEl.forEach(function(element, index){
+    element.onclick = function(){
+      setVideoCurrentTime(element.innerText)
+    }
+  })
+}
+
+function setVideoCurrentTime(timecode){
+
+  //convert timecode
+  var time = convertTimeCodeToSeconds(timecode);
+  
+  if(isYoutubeVideo){
+    var iframe = document.querySelector('iframe');
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    // innerDoc.querySelectorAll('video')[0].click();
+    innerDoc.querySelectorAll('video')[0].currentTime = time;
+    playVideo();
+  }
+}
+
+function convertTimeCodeToSeconds(timeString){
+
+  var timeArray = timeString.split(":");
+
+  var hours   = parseFloat(timeArray[0]) * 60 * 60;
+  var minutes = parseFloat(timeArray[1]) * 60;
+  var seconds = parseFloat(timeArray[2].replace(",","."));
+  // var frames  = parseInt(timeArray[3].split(",")[1])*(1/framerate);
+  // var str = "h:" + hours + "\nm:" + minutes + "\ns:" + seconds + "\nf:" + frames;
+  // console.log(str);
+  var totalTime = hours + minutes + seconds// + frames;
+
+  //alert(timeString + " = " + totalTime)
+  return totalTime;
+}
+
+function playVideo(){
+  console.log("play video ");
+  // document.querySelector( 'video' ).play();
+  if(isYoutubeVideo){
+    var iframe = document.querySelector('iframe');
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+    if(innerDoc.querySelectorAll('video')[0].src ==""){
+      innerDoc.querySelectorAll('video')[0].click();
+    }else{
+      innerDoc.querySelectorAll('video')[0].play();
+    }
+    
+  }
+    
+}
+
+function pauseVideo(){
+  if(isYoutubeVideo){
+    var iframe = document.querySelector('iframe');
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    // document.querySelector( 'video' ).pause();
+    innerDoc.querySelectorAll('video')[0].pause();
+  }
+  
+}
+
+
+    var demoText =`Yeah there we go just want to extend a thanks again to to Pietro and Bend. This is an incredible gathering of people and tough acts to follow. So I'm going to talk about nothing so expensive, as as everyone else has I've been working. I mentioned on content management systems, mostly text. I haven't been doing a lot of sort of audio and video stuff recently, but one of the things that we found is as systems have gotten more complicated as the things that we're trying to do in the web. Publishing space get more complicated, some of the tools that we've been relying on for a long time are starting to show their age, so I wanted to talk about killing, markdown and and killing markup for that matter. So, just a little bit of history here this who here knows markdown so pretty much everyone. So this looks a lot like markdown right. It'S like you know, he's got a header, paragraph ordered list, etc. You know it's a little bit different from from mark down, but it's not marked down it's GML. It was written in 1969. Gml was an IBM project to essentially write text into into files in ways that could be output for computers to display and print in in better formatted ways, GML gave birth to sgml, which was a standard, as standardized generalized, normally would which in turn gave birth to A both HTML and XML HTML eventually became markdown again. An XML sort of through a process of alien abduction nowadays is like JSON kind of, but I think you know when we reflect on on this. Our tools are based on a couple of really basic assumptions that aren't correct anymore, so you know these dis formatting. This simple formatting was premise to only like think about how powerful or not computers of 1969 we're just getting text into a file was a hard challenge and and then taking that and outputting it in formatting it into something for a printer was a new problem right. It'S something that no one had ever dealt with before so so now you know: we've lived through the explosion of online publishing and and one of the things that that I think people in this room understands more than anyone else, but I think more people are beginning To realize this is that content is not hierarchical, we don't. We don't have this strict hierarchical model of content that HTML and XML kind of give us. So this idea that you know everything that we can express, we can just do with a series of in closing tag, and I think that assumptions that we've made that we that we proceed with is really limiting, and I think overall I just I just want to Take a little bit of time to for us for this room to reflect on it. You know, HTML has enabled a huge amount of amazing things. It allows us to do everything on the web and and that conceptual model has gone a long way. I think a lot of the experiments that we're talked about earlier are really pushing the boundaries of what what we can do with HTML, and I think one of the things that that this room could could come up with is a better mental model for how we Think about content and because it there's this challenge, we can write code. That does this, but it's not reproducible and it doesn't give us a generalized mental model for thinking about things. So I'm just going to go through some of the the you know, these ideas so yeah cool story content is hierarchical. Here'S here's my favorite example of non hierarchical content, so this is edit on the wasteland mark that up in HTML it's a disaster right like this. The content is the printed site. Everything else is edit for Elliott by other other people, multiple people and it doesn't fit into into this this shape. So I spent basically last five years of my life working on a project called Poetica, which was an online collaborative editor, where we were basically trying to enable this on the web, and that raised some. Some really interesting problems turns out. It wasn't a two-week open-source hacking. This is a lot harder than we thought and - and I think you know we - we have this idea now - that for responsive design we can just take the content and slow it into into whichever container we want, but the reality is that content is more like a Liquid and some liquids are different from others, and we need sometimes the component parts to be able to reason about what we're doing so like if you want to so analogy, is a little bit stretched, but you know like coffee, we take beans, we grind them. We brew the coffee and then we pour it into the into the container. You can't just say I can make coffee into water by pouring it into a different container. Right, like it is hard metaphor, so this is I'm just going to dive into how we approach this problem really is a way. I don't have any answers, a spoiler alert, but I think just as a way to give you guys a framework for sort of thinking about how you might approach it. So we essentially took the content and - and we got rid of HTML to start and we would still use it for for like presentation, but essentially we move the content just to a JSON out there. And then the key thing here is that we moved all of the all of the the stuff that you would normally put into HTML into annotations. So it's I mean it's very simple, similar to what everyone here is doing, but if we want an unordered list, we just say the unordered list starts to provision 29 coverage. That text. We want some bold text, director position as being Kevin's aspect, because we want to comment. It starts at position 28 and covers that text and here's the comments and it's just some arbitrary metadata, and so this is the rendered output. But you can see that these things all overlap and so to represent that in HTML would have been basically impossible for us approaching it. This way was central because of change control, revision control. So we wanted to be able to handle changes to the underlying content. It wasn't static, so you know if you've ever gotten into a complex, get conflict situation. You'Ll know very intimately what Kaylah. So here's this. This is just a zoomed in view of the json, if i want to add some text so that it changes all. I do here is add some numbers to the positions, so it's a really simple model. It gets more complicated, but it this would have been impossible in 1969, like they just didn't. Have the tools to even consider thinking about doing something like this in an efficient fast way, but now we're doing you know the demos earlier are doing basically this kind of thing with way more complicated structures, but i think we haven't quite taken a step back to Think about what that means in general, so i just i'm off this up. I'M pretty much done, but i'm up this up in preparing for this, and this is actually taken straight out of christmas repo into three format. It a little, but essentially so as a thought. Experiment we have a document, this has the transcript and some audio and then the annotations not sure if this is going easy to explain. But basically so they have a start point in the end point and the start points against the transcript, which is the fact zero. The games, the audio exists, the end point, internship. It ends with the end of the transcription at the end of the audio and then for a word that just included one we're good here. Obviously, people simple, but the word, starts at position: zero and go to Commission to to the wording in included that here and then the audio is from Europe. Was there four seconds to 0.28 seconds now? The interesting thing here is that if we, if we modify the text like, if we add something at the beginning of the text, we have a really simple way of adjusting the annotation without without sort of lunging. Everything and the same thing is true of the audio. So if we make something interested into the original audio file, we can adjust the offset, so everything is sort of independent but like axes as the Augmented approach to this. So that's the last that I have, but I think you know conceptually for forward what we're doing and publishing this model gives us the ability to really be adaptive in what we display. So a lot of the stuff that I mean Chris and down mark we're talking about earlier, like a lot of those possibilities, become really easy to to reason about, because you can, you can filter, you, can mixing different components and and rendering it out to HTML, which I'Ve come to think more like PDF, then the sort of promise semantic Wunderland. You know, I think I think that this model works really well for that. This is just a an example of what this could look like. I think this is something that that we need to hash out I'm allergic to standards now with them too many, so I won't apologist Anders, but I just want to say like, as the next few days are going, I mean keep this in mind: try where you Can to extract sort of common approaches to things, because I think the work that's being done here is some of the most interesting stuff. I think on the internet right now and will enable so many things to happen and if we can get it right in in terms of constructing a shared mental model, it'll it'll extend beyond this room. To you know the millions of people who create stuff for the web now, so that's everything I think I'm spending in the way of lunch, maybe so: ok, yeah [ Applause, ] in court or sister character. Yes, such a suit, yeah yeah, exactly yes, yeah yeah. So I think I think yeah I mean the way that we've approached is very much character based and around Unicode, like the tech stuff has been, has been pretty well. So one of the things that I do like above so in thinking about this stuff is like it there's a bunch of different approaches that are quite challenging, but recently I should have had the realization I mean you guys know this already, but if the annotation is A game, a video, then, is it frames or is it seconds, and but you can sort of decide that, and as long as you agree on where the annotation is sort of is positioned against this model basically applies to anything. So we're looking at doing really complicated. Like essentially layouts of references, archival representations of our old InDesign layout that we can do in this way, because if you can kind of encode everything, Thank You Paz really quickly. I love it and also the question is nothing in terms of what I was subscribed for words. We would love to basically execute someone from polymer content, but have lots of resources of the damage so sources after there. I'M also another thing, not happy. I'M sad - and I wonder, are there things like that? That was that a conscious decision to not include so this is, I don't know? Yes, yes, so no, so this is actually just a massively simplified just fit on the tides. Basically, okay, all of that stuff can be included. One of the nice things about the imitation model, which I mean you guys know, is that you can mix in and out like you can filter and add annotations as long as you're talking about the same thing. So if I have you know, commentary like a commentary truck there's, no reason the commentary track shouldn't be aligned to the original content or you shouldn't need to duplicate the original contents in order to add the commentary, but you might not want to include it in every Dodging and so you can just you - can just insert into offensive this disarray cool. Thank you very much. 15-Minute break everybody stretch I'm going to quick mention before lunch. It was up to you. Stretch. Bathrooms on hall must be any questions. Feedback at new so should identify the yeah nine people run out of battery`
+
+
+//TODO: replace with more accurate srt, with better chunking, once available.
+    var demoSrtContent = `1
+00:00:00,000 --> 00:00:17,720
+Yeah there we go just want to
+extend a thanks again to to Pietro
+
+2
+00:00:17,720 --> 00:00:19,000
+and Bend.
+
+3
+00:00:19,000 --> 00:00:25,000
+This is an incredible gathering of
+people and tough acts to follow.
+
+4
+00:00:25,000 --> 00:00:30,680
+So I'm going to talk about nothing
+so expensive, as as everyone else
+
+5
+00:00:30,680 --> 00:00:32,600
+has I've been working.
+
+6
+00:00:32,600 --> 00:00:37,360
+I mentioned on content management
+systems, mostly text.
+
+7
+00:00:37,360 --> 00:00:41,040
+I haven't been doing a lot of sort
+of audio and video stuff recently,
+
+8
+00:00:41,040 --> 00:00:44,960
+but one of the things that we
+found is as systems have gotten
+
+9
+00:00:44,960 --> 00:00:51,370
+more complicated as the things
+that we're trying to do in the web.
+
+10
+00:00:51,370 --> 00:00:56,520
+Publishing space get more
+complicated, some of the tools
+
+11
+00:00:56,520 --> 00:00:59,880
+that we've been relying on for a
+long time are starting to show
+
+12
+00:00:59,880 --> 00:01:05,840
+their age, so I wanted to talk
+about killing, markdown and and
+
+13
+00:01:05,840 --> 00:01:09,080
+killing markup for that matter.
+
+14
+00:01:09,080 --> 00:01:16,080
+So, just a little bit of history
+here this who here knows markdown
+
+15
+00:01:16,080 --> 00:01:17,560
+so pretty much everyone.
+
+16
+00:01:17,560 --> 00:01:20,280
+So this looks a lot like markdown
+right.
+
+17
+00:01:20,280 --> 00:01:24,400
+It'S like you know, he's got a
+header, paragraph ordered list,
+
+18
+00:01:24,400 --> 00:01:29,560
+etc. You know it's a little bit
+different from from mark down, but
+
+19
+00:01:29,560 --> 00:01:32,800
+it's not marked down it's GML.
+
+20
+00:01:32,800 --> 00:01:37,440
+It was written in 1969.
+
+21
+00:01:37,440 --> 00:01:43,560
+Gml was an IBM project to
+essentially write text into into
+
+22
+00:01:43,560 --> 00:01:48,240
+files in ways that could be output
+for computers to display and print
+
+23
+00:01:48,240 --> 00:01:55,360
+in in better formatted ways, GML
+gave birth to sgml, which was a
+
+24
+00:01:55,360 --> 00:01:58,760
+standard, as standardized
+generalized, normally would which
+
+25
+00:01:58,760 --> 00:02:05,040
+in turn gave birth to A both HTML
+and XML HTML eventually became
+
+26
+00:02:05,040 --> 00:02:07,160
+markdown again.
+
+27
+00:02:07,160 --> 00:02:11,960
+An XML sort of through a process
+of alien abduction nowadays is
+
+28
+00:02:11,960 --> 00:02:20,520
+like JSON kind of, but I think you
+know when we reflect on on this.
+
+29
+00:02:20,520 --> 00:02:25,200
+Our tools are based on a couple of
+really basic assumptions that
+
+30
+00:02:25,200 --> 00:02:29,880
+aren't correct anymore, so you
+know these dis formatting.
+
+31
+00:02:29,880 --> 00:02:35,400
+This simple formatting was premise
+to only like think about how
+
+32
+00:02:35,400 --> 00:02:40,480
+powerful or not computers of 1969
+we're just getting text into a
+
+33
+00:02:40,480 --> 00:02:47,160
+file was a hard challenge and and
+then taking that and outputting it
+
+34
+00:02:47,160 --> 00:02:51,800
+in formatting it into something
+for a printer was a new problem
+
+35
+00:02:51,800 --> 00:02:52,480
+right.
+
+36
+00:02:52,480 --> 00:02:58,800
+It'S something that no one had
+ever dealt with before so so now
+
+37
+00:02:58,800 --> 00:03:03,760
+you know: we've lived through the
+explosion of online publishing and
+
+38
+00:03:03,760 --> 00:03:07,080
+and one of the things that that I
+think people in this room
+
+39
+00:03:07,080 --> 00:03:11,280
+understands more than anyone else,
+but I think more people are
+
+40
+00:03:11,280 --> 00:03:15,800
+beginning To realize this is that
+content is not hierarchical, we
+
+41
+00:03:15,800 --> 00:03:16,480
+don't.
+
+42
+00:03:16,480 --> 00:03:20,600
+We don't have this strict
+hierarchical model of content that
+
+43
+00:03:20,600 --> 00:03:23,640
+HTML and XML kind of give us.
+
+44
+00:03:23,640 --> 00:03:28,760
+So this idea that you know
+everything that we can express, we
+
+45
+00:03:28,760 --> 00:03:33,280
+can just do with a series of in
+closing tag, and I think that
+
+46
+00:03:33,280 --> 00:03:37,840
+assumptions that we've made that
+we that we proceed with is really
+
+47
+00:03:37,840 --> 00:03:42,360
+limiting, and I think overall I
+just I just want to Take a little
+
+48
+00:03:42,360 --> 00:03:47,320
+bit of time to for us for this
+room to reflect on it.
+
+49
+00:03:47,320 --> 00:03:53,680
+You know, HTML has enabled a huge
+amount of amazing things.
+
+50
+00:03:53,680 --> 00:04:01,080
+It allows us to do everything on
+the web and and that conceptual
+
+51
+00:04:01,080 --> 00:04:02,640
+model has gone a long way.
+
+52
+00:04:02,640 --> 00:04:07,600
+I think a lot of the experiments
+that we're talked about earlier
+
+53
+00:04:07,600 --> 00:04:12,880
+are really pushing the boundaries
+of what what we can do with HTML,
+
+54
+00:04:12,880 --> 00:04:20,560
+and I think one of the things that
+that this room could could come up
+
+55
+00:04:20,560 --> 00:04:27,320
+with is a better mental model for
+how we Think about content and
+
+56
+00:04:27,320 --> 00:04:31,120
+because it there's this challenge,
+we can write code.
+
+57
+00:04:31,120 --> 00:04:33,800
+That does this, but it's not
+reproducible and it doesn't give
+
+58
+00:04:33,800 --> 00:04:37,040
+us a generalized mental model for
+thinking about things.
+
+59
+00:04:37,040 --> 00:04:41,120
+So I'm just going to go through
+some of the the you know, these
+
+60
+00:04:41,120 --> 00:04:45,120
+ideas so yeah cool story content
+is hierarchical.
+
+61
+00:04:45,120 --> 00:04:52,520
+Here'S here's my favorite example
+of non hierarchical content, so
+
+62
+00:04:52,520 --> 00:04:59,800
+this is edit on the wasteland mark
+that up in HTML it's a disaster
+
+63
+00:04:59,800 --> 00:05:00,480
+right like this.
+
+64
+00:05:00,480 --> 00:05:04,600
+The content is the printed site.
+
+65
+00:05:04,600 --> 00:05:10,680
+Everything else is edit for
+Elliott by other other people,
+
+66
+00:05:10,680 --> 00:05:16,160
+multiple people and it doesn't fit
+into into this this shape.
+
+67
+00:05:16,160 --> 00:05:20,120
+So I spent basically last five
+years of my life working on a
+
+68
+00:05:20,120 --> 00:05:23,400
+project called Poetica, which was
+an online collaborative editor,
+
+69
+00:05:23,400 --> 00:05:28,400
+where we were basically trying to
+enable this on the web, and that
+
+70
+00:05:28,400 --> 00:05:29,120
+raised some.
+
+71
+00:05:29,120 --> 00:05:31,960
+Some really interesting problems
+turns out.
+
+72
+00:05:31,960 --> 00:05:34,720
+It wasn't a two-week open-source
+hacking.
+
+73
+00:05:34,720 --> 00:05:42,640
+This is a lot harder than we
+thought and - and I think you know
+
+74
+00:05:42,640 --> 00:05:48,200
+we - we have this idea now - that
+for responsive design we can just
+
+75
+00:05:48,200 --> 00:05:51,640
+take the content and slow it into
+into whichever container we want,
+
+76
+00:05:51,640 --> 00:05:55,960
+but the reality is that content is
+more like a Liquid and some
+
+77
+00:05:55,960 --> 00:05:59,280
+liquids are different from others,
+and we need sometimes the
+
+78
+00:05:59,280 --> 00:06:04,880
+component parts to be able to
+reason about what we're doing so
+
+79
+00:06:04,880 --> 00:06:08,960
+like if you want to so analogy, is
+a little bit stretched, but you
+
+80
+00:06:08,960 --> 00:06:12,520
+know like coffee, we take beans,
+we grind them.
+
+81
+00:06:12,520 --> 00:06:16,000
+We brew the coffee and then we
+pour it into the into the
+
+82
+00:06:16,000 --> 00:06:17,480
+container.
+
+83
+00:06:17,480 --> 00:06:20,840
+You can't just say I can make
+coffee into water by pouring it
+
+84
+00:06:20,840 --> 00:06:23,440
+into a different container.
+
+85
+00:06:23,440 --> 00:06:28,120
+Right, like it is hard metaphor,
+so this is I'm just going to dive
+
+86
+00:06:28,120 --> 00:06:33,200
+into how we approach this problem
+really is a way.
+
+87
+00:06:33,200 --> 00:06:39,400
+I don't have any answers, a
+spoiler alert, but I think just as
+
+88
+00:06:39,400 --> 00:06:43,600
+a way to give you guys a framework
+for sort of thinking about how you
+
+89
+00:06:43,600 --> 00:06:46,680
+might approach it.
+
+90
+00:06:46,680 --> 00:06:52,440
+So we essentially took the content
+and - and we got rid of HTML to
+
+91
+00:06:52,440 --> 00:06:57,560
+start and we would still use it
+for for like presentation, but
+
+92
+00:06:57,560 --> 00:07:01,240
+essentially we move the content
+just to a JSON out there.
+
+93
+00:07:01,240 --> 00:07:05,480
+And then the key thing here is
+that we moved all of the all of
+
+94
+00:07:05,480 --> 00:07:09,120
+the the stuff that you would
+normally put into HTML into
+
+95
+00:07:09,120 --> 00:07:10,120
+annotations.
+
+96
+00:07:10,120 --> 00:07:13,400
+So it's I mean it's very simple,
+similar to what everyone here is
+
+97
+00:07:13,400 --> 00:07:17,720
+doing, but if we want an unordered
+list, we just say the unordered
+
+98
+00:07:17,720 --> 00:07:19,960
+list starts to provision 29
+coverage.
+
+99
+00:07:19,960 --> 00:07:20,960
+That text.
+
+100
+00:07:20,960 --> 00:07:26,160
+We want some bold text, director
+position as being Kevin's aspect,
+
+101
+00:07:26,160 --> 00:07:27,760
+because we want to comment.
+
+102
+00:07:27,760 --> 00:07:31,200
+It starts at position 28 and
+covers that text and here's the
+
+103
+00:07:31,200 --> 00:07:34,800
+comments and it's just some
+arbitrary metadata, and so this is
+
+104
+00:07:34,800 --> 00:07:35,880
+the rendered output.
+
+105
+00:07:35,880 --> 00:07:40,320
+But you can see that these things
+all overlap and so to represent
+
+106
+00:07:40,320 --> 00:07:43,720
+that in HTML would have been
+basically impossible for us
+
+107
+00:07:43,720 --> 00:07:44,280
+approaching it.
+
+108
+00:07:44,280 --> 00:07:49,400
+This way was central because of
+change control, revision control.
+
+109
+00:07:49,400 --> 00:07:54,800
+So we wanted to be able to handle
+changes to the underlying content.
+
+110
+00:07:54,800 --> 00:08:01,520
+It wasn't static, so you know if
+you've ever gotten into a complex,
+
+111
+00:08:01,520 --> 00:08:03,760
+get conflict situation.
+
+112
+00:08:03,760 --> 00:08:07,680
+You'Ll know very intimately what
+Kaylah.
+
+113
+00:08:07,680 --> 00:08:09,360
+So here's this.
+
+114
+00:08:09,360 --> 00:08:14,880
+This is just a zoomed in view of
+the json, if i want to add some
+
+115
+00:08:14,880 --> 00:08:18,480
+text so that it changes all.
+
+116
+00:08:18,480 --> 00:08:22,320
+I do here is add some numbers to
+the positions, so it's a really
+
+117
+00:08:22,320 --> 00:08:23,200
+simple model.
+
+118
+00:08:23,200 --> 00:08:26,320
+It gets more complicated, but it
+this would have been impossible in
+
+119
+00:08:26,320 --> 00:08:28,800
+1969, like they just didn't.
+
+120
+00:08:28,800 --> 00:08:33,200
+Have the tools to even consider
+thinking about doing something
+
+121
+00:08:33,200 --> 00:08:37,520
+like this in an efficient fast
+way, but now we're doing you know
+
+122
+00:08:37,520 --> 00:08:40,920
+the demos earlier are doing
+basically this kind of thing with
+
+123
+00:08:40,920 --> 00:08:45,160
+way more complicated structures,
+but i think we haven't quite taken
+
+124
+00:08:45,160 --> 00:08:50,240
+a step back to Think about what
+that means in general, so i just
+
+125
+00:08:50,240 --> 00:08:51,560
+i'm off this up.
+
+126
+00:08:51,560 --> 00:08:58,240
+I'M pretty much done, but i'm up
+this up in preparing for this, and
+
+127
+00:08:58,240 --> 00:09:04,720
+this is actually taken straight
+out of christmas repo into three
+
+128
+00:09:04,720 --> 00:09:05,840
+format.
+
+129
+00:09:05,840 --> 00:09:10,000
+It a little, but essentially so as
+a thought.
+
+130
+00:09:10,000 --> 00:09:15,480
+Experiment we have a document,
+this has the transcript and some
+
+131
+00:09:15,480 --> 00:09:21,880
+audio and then the annotations not
+sure if this is going easy to
+
+132
+00:09:21,880 --> 00:09:23,960
+explain.
+
+133
+00:09:23,960 --> 00:09:28,120
+But basically so they have a start
+point in the end point and the
+
+134
+00:09:28,120 --> 00:09:33,080
+start points against the
+transcript, which is the fact zero.
+
+135
+00:09:33,080 --> 00:09:37,320
+The games, the audio exists, the
+end point, internship.
+
+136
+00:09:37,320 --> 00:09:41,160
+It ends with the end of the
+transcription at the end of the
+
+137
+00:09:41,160 --> 00:09:44,440
+audio and then for a word that
+just included one we're good here.
+
+138
+00:09:44,440 --> 00:09:51,600
+Obviously, people simple, but the
+word, starts at position: zero and
+
+139
+00:09:51,600 --> 00:09:57,400
+go to Commission to to the wording
+in included that here and then the
+
+140
+00:09:57,400 --> 00:09:59,040
+audio is from Europe.
+
+141
+00:09:59,040 --> 00:10:03,160
+Was there four seconds to 0.28
+seconds now?
+
+142
+00:10:03,160 --> 00:10:07,160
+The interesting thing here is that
+if we, if we modify the text like,
+
+143
+00:10:07,160 --> 00:10:12,200
+if we add something at the
+beginning of the text, we have a
+
+144
+00:10:12,200 --> 00:10:17,200
+really simple way of adjusting the
+annotation without without sort of
+
+145
+00:10:17,200 --> 00:10:18,760
+lunging.
+
+146
+00:10:18,760 --> 00:10:21,520
+Everything and the same thing is
+true of the audio.
+
+147
+00:10:21,520 --> 00:10:24,880
+So if we make something interested
+into the original audio file, we
+
+148
+00:10:24,880 --> 00:10:28,600
+can adjust the offset, so
+everything is sort of independent
+
+149
+00:10:28,600 --> 00:10:34,200
+but like axes as the Augmented
+approach to this.
+
+150
+00:10:34,200 --> 00:10:41,440
+So that's the last that I have,
+but I think you know conceptually
+
+151
+00:10:41,440 --> 00:10:47,440
+for forward what we're doing and
+publishing this model gives us the
+
+152
+00:10:47,440 --> 00:10:52,280
+ability to really be adaptive in
+what we display.
+
+153
+00:10:52,280 --> 00:10:55,880
+So a lot of the stuff that I mean
+Chris and down mark we're talking
+
+154
+00:10:55,880 --> 00:10:59,880
+about earlier, like a lot of those
+possibilities, become really easy
+
+155
+00:10:59,880 --> 00:11:03,360
+to to reason about, because you
+can, you can filter, you, can
+
+156
+00:11:03,360 --> 00:11:09,960
+mixing different components and
+and rendering it out to HTML,
+
+157
+00:11:09,960 --> 00:11:15,760
+which I'Ve come to think more like
+PDF, then the sort of promise
+
+158
+00:11:15,760 --> 00:11:17,760
+semantic Wunderland.
+
+159
+00:11:17,760 --> 00:11:22,840
+You know, I think I think that
+this model works really well for
+
+160
+00:11:22,840 --> 00:11:23,480
+that.
+
+161
+00:11:23,480 --> 00:11:27,720
+This is just a an example of what
+this could look like.
+
+162
+00:11:27,720 --> 00:11:32,880
+I think this is something that
+that we need to hash out I'm
+
+163
+00:11:32,880 --> 00:11:37,280
+allergic to standards now with
+them too many, so I won't
+
+164
+00:11:37,280 --> 00:11:42,600
+apologist Anders, but I just want
+to say like, as the next few days
+
+165
+00:11:42,600 --> 00:11:48,400
+are going, I mean keep this in
+mind: try where you Can to extract
+
+166
+00:11:48,400 --> 00:11:52,560
+sort of common approaches to
+things, because I think the work
+
+167
+00:11:52,560 --> 00:11:55,960
+that's being done here is some of
+the most interesting stuff.
+
+168
+00:11:55,960 --> 00:12:00,840
+I think on the internet right now
+and will enable so many things to
+
+169
+00:12:00,840 --> 00:12:05,280
+happen and if we can get it right
+in in terms of constructing a
+
+170
+00:12:05,280 --> 00:12:11,440
+shared mental model, it'll it'll
+extend beyond this room.
+
+171
+00:12:11,440 --> 00:12:14,680
+To you know the millions of people
+who create stuff for the web now,
+
+172
+00:12:14,680 --> 00:12:19,440
+so that's everything I think I'm
+spending in the way of lunch,
+
+173
+00:12:19,440 --> 00:12:45,880
+maybe so: ok, yeah [ Applause, ]
+in court or sister character.
+
+174
+00:12:45,880 --> 00:13:02,280
+Yes, such a suit, yeah yeah,
+exactly yes, yeah yeah.
+
+175
+00:13:02,280 --> 00:13:11,200
+So I think I think yeah I mean the
+way that we've approached is very
+
+176
+00:13:11,200 --> 00:13:16,720
+much character based and around
+Unicode, like the tech stuff has
+
+177
+00:13:16,720 --> 00:13:17,880
+been, has been pretty well.
+
+178
+00:13:17,880 --> 00:13:22,360
+So one of the things that I do
+like above so in thinking about
+
+179
+00:13:22,360 --> 00:13:26,400
+this stuff is like it there's a
+bunch of different approaches that
+
+180
+00:13:26,400 --> 00:13:29,960
+are quite challenging, but
+recently I should have had the
+
+181
+00:13:29,960 --> 00:13:33,680
+realization I mean you guys know
+this already, but if the
+
+182
+00:13:33,680 --> 00:13:39,240
+annotation is A game, a video,
+then, is it frames or is it
+
+183
+00:13:39,240 --> 00:13:43,360
+seconds, and but you can sort of
+decide that, and as long as you
+
+184
+00:13:43,360 --> 00:13:48,640
+agree on where the annotation is
+sort of is positioned against this
+
+185
+00:13:48,640 --> 00:13:50,760
+model basically applies to
+anything.
+
+186
+00:13:50,760 --> 00:13:53,040
+So we're looking at doing really
+complicated.
+
+187
+00:13:53,040 --> 00:13:56,000
+Like essentially layouts of
+references, archival
+
+188
+00:13:56,000 --> 00:14:03,360
+representations of our old
+InDesign layout that we can do in
+
+189
+00:14:03,360 --> 00:14:10,880
+this way, because if you can kind
+of encode everything, Thank You
+
+190
+00:14:10,880 --> 00:14:12,880
+Paz really quickly.
+
+191
+00:14:12,880 --> 00:14:18,440
+I love it and also the question is
+nothing in terms of what I was
+
+192
+00:14:18,440 --> 00:14:20,920
+subscribed for words.
+
+193
+00:14:20,920 --> 00:14:26,280
+We would love to basically execute
+someone from polymer content, but
+
+194
+00:14:26,280 --> 00:14:30,720
+have lots of resources of the
+damage so sources after there.
+
+195
+00:14:30,720 --> 00:14:34,320
+I'M also another thing, not happy.
+
+196
+00:14:34,320 --> 00:14:39,360
+I'M sad - and I wonder, are there
+things like that?
+
+197
+00:14:39,360 --> 00:14:43,240
+That was that a conscious decision
+to not include so this is, I don't
+
+198
+00:14:43,240 --> 00:14:44,080
+know?
+
+199
+00:14:44,080 --> 00:14:49,080
+Yes, yes, so no, so this is
+actually just a massively
+
+200
+00:14:49,080 --> 00:14:51,560
+simplified just fit on the tides.
+
+201
+00:14:51,560 --> 00:14:53,920
+Basically, okay, all of that stuff
+can be included.
+
+202
+00:14:53,920 --> 00:14:56,480
+One of the nice things about the
+imitation model, which I mean you
+
+203
+00:14:56,480 --> 00:15:02,400
+guys know, is that you can mix in
+and out like you can filter and
+
+204
+00:15:02,400 --> 00:15:05,840
+add annotations as long as you're
+talking about the same thing.
+
+205
+00:15:05,840 --> 00:15:13,000
+So if I have you know, commentary
+like a commentary truck there's,
+
+206
+00:15:13,000 --> 00:15:16,280
+no reason the commentary track
+shouldn't be aligned to the
+
+207
+00:15:16,280 --> 00:15:19,200
+original content or you shouldn't
+need to duplicate the original
+
+208
+00:15:19,200 --> 00:15:22,520
+contents in order to add the
+commentary, but you might not want
+
+209
+00:15:22,520 --> 00:15:26,520
+to include it in every Dodging and
+so you can just you - can just
+
+210
+00:15:26,520 --> 00:15:28,840
+insert into offensive this
+disarray cool.
+
+211
+00:15:28,840 --> 00:15:32,520
+Thank you very much.
+
+212
+00:15:32,520 --> 00:15:43,160
+15-Minute break everybody stretch
+I'm going to quick mention before
+
+213
+00:15:43,160 --> 00:15:44,880
+lunch.
+
+214
+00:15:44,880 --> 00:15:47,160
+It was up to you.
+
+215
+00:15:47,160 --> 00:15:49,440
+Stretch.
+
+216
+00:15:49,440 --> 00:15:54,030
+Bathrooms on hall must be any
+questions.
+
+217
+00:15:54,030 --> 00:16:01,920
+Feedback at new so should identify
+the yeah nine people run out of
+
+218
+00:16:01,920 --> 00:16:04,280
+battery
+`
+    
+    }
+    
+  </script>
+</html>
+
+<!-- <track kind="subtitles" label="English subtitles" src="subtitles_en.vtt" srclang="en" default></track> -->
